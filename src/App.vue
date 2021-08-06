@@ -1,55 +1,73 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+    <v-app-bar app :color="themeColor" dark>
+      <v-app-bar-nav-icon @click="drawerOpen=!drawerOpen"></v-app-bar-nav-icon>
+      <v-toolbar-title>Book Collab</v-toolbar-title>
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn icon @click="toggleDark">
+        <v-icon>mdi-brightness-6</v-icon>
       </v-btn>
     </v-app-bar>
-
+    <v-navigation-drawer app v-model="drawerOpen">
+      <v-list nav>
+        <v-list-item-group>
+          <v-list-item v-for="(item,index) in navigationItems" :key="index" @click="navigateTo(item.routerName)">
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>{{ item.text }}</v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
     <v-main>
-      <router-view/>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import * as vuex from 'vuex'
 
 export default {
   name: 'App',
-
-  data: () => ({
-    //
-  }),
-};
+  metaInfo: {
+    title: 'Book Collab',
+    titleTemplate: '%s | Book Collab',
+  },
+  data() {
+    return {
+      drawerOpen: false,
+      navigationItems: [
+        {icon: 'mdi-home', text: '主页', routerName: 'Index'},
+      ]
+    }
+  },
+  mounted() {
+    this.applyTheme()
+  },
+  watch: {
+    themeColor() {
+      this.applyTheme()
+    }
+  },
+  computed: {
+    ...vuex.mapState([
+      'themeColor'
+    ])
+  },
+  methods: {
+    navigateTo(routerName, params = {}) {
+      this.$router.push({name: routerName, params: params})
+    },
+    applyTheme() {
+      this.$vuetify.theme.themes.light.primary = this.themeColor
+    },
+    toggleDark() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+    }
+  }
+}
 </script>
