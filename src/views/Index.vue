@@ -6,7 +6,7 @@
         <v-progress-linear indeterminate v-show="loading"></v-progress-linear>
         <v-row>
           <v-col cols="6" v-for="(item,index) in bookList" :key="index">
-            <novel-list-item :name="item.title" :intro="item.intro" :id="item.id"></novel-list-item>
+            <novel-list-item :name="item.title" :intro="item.intro" :novelId="item.id" :tags="item.tags"></novel-list-item>
           </v-col>
         </v-row>
       </v-card-text>
@@ -37,6 +37,7 @@ export default {
   methods: {
     getList() {
       this.loading = true
+      this.bookList = []
       this.$axios.get('novel/list').then(res => {
         this.bookList = res.data.data
         this.loading = false

@@ -5,14 +5,15 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
-import VueMeta from 'vue-meta'
 import {Helper} from '@/plugins/helper'
 import axios from 'axios'
 import {appConfig} from "@/plugins/config"
+import VueMeta from "vue-meta"
 
 Vue.config.productionTip = false
 
 Vue.use(VueMeta)
+
 Vue.prototype.$config = appConfig
 Vue.prototype.$helper = new Helper()
 let appAxios = axios.create({

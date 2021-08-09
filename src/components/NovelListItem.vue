@@ -13,13 +13,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <v-card height="130" class="ma-1" hover>
-      <v-row>
+      <v-row @click="openNovel">
         <v-col cols="3">
           <v-img height="110" class="fill-height ml-2" :src="imgSrc"></v-img>
         </v-col>
         <v-col cols="9">
           <p class="body-1 font-weight-bold">{{ name }}</p>
+          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index">{{item}}</v-chip>
         </v-col>
       </v-row>
       <v-btn icon right style="position: absolute;right: 0;bottom: 0;" @click="dialog=!dialog">
@@ -35,7 +37,8 @@ export default {
   props: {
     name: String,
     intro: String,
-    id: Number
+    novelId: Number,
+    tags: String
   },
   data() {
     return {
@@ -44,10 +47,21 @@ export default {
   },
   computed: {
     imgSrc() {
-      return 'https://api.skyju.cc/mobile-acg/api.php?method=get&r=' + Math.random()
+      return this.$helper.getCoverImg()
     },
-    introWithBr(){
-      return this.intro.replace(/\n/g,'<br/>')
+    introWithBr() {
+      return this.intro.replace(/\n/g, '<br/>')
+    },
+    tagArr(){
+      if(this.tags){
+        return this.$helper.tagsToTagArr(this.tags)
+      }
+      return []
+    }
+  },
+  methods: {
+    openNovel() {
+      this.$router.push({name: 'Novel', params: {novelId: this.novelId}})
     }
   }
 }

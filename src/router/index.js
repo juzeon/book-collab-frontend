@@ -9,12 +9,14 @@ const routes = [
     {
         path: '/',
         name: 'Index',
-        component: Index
+        component: Index,
+        props: true
     },
     {
-        path: '/novel/:id',
+        path: '/novel/:novelId',
         name: 'Novel',
-        component: Novel
+        component: Novel,
+        props: true
     }
 ]
 
