@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "BaseFocusAreaSingle"
+  name: "FocusAreaSingle"
 }
 </script>
 

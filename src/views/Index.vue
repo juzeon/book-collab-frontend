@@ -3,13 +3,10 @@
     <v-card flat outlined>
       <v-card-text>
         <v-subheader>小说列表</v-subheader>
-        <v-progress-linear indeterminate></v-progress-linear>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <base-book-list-item name="书名书名书名" intro="简介简介简介" :id="1"></base-book-list-item>
-          </v-col>
-          <v-col cols="6">
-            <base-book-list-item name="书名书名书名" intro="简介简介简介" :id="1"></base-book-list-item>
+        <v-progress-linear indeterminate v-show="loading"></v-progress-linear>
+        <v-row>
+          <v-col cols="6" v-for="(item,index) in bookList" :key="index">
+            <novel-list-item :name="item.title" :intro="item.intro" :id="item.id"></novel-list-item>
           </v-col>
         </v-row>
       </v-card-text>
@@ -21,7 +18,7 @@
 
 <script>
 import FocusAreaSingle from "@/components/FocusAreaSingle"
-import BaseBookListItem from "@/components/BaseBookListItem"
+import NovelListItem from "@/components/NovelListItem"
 
 export default {
   name: 'Index',
@@ -30,18 +27,24 @@ export default {
   },
   data() {
     return {
-      loading: true
+      loading: true,
+      bookList: []
     }
   },
-  methods:{
-    getList(){
-      this.$axios.get('novel/list').then(res =>{
-        
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.loading = true
+      this.$axios.get('novel/list').then(res => {
+        this.bookList = res.data.data
+        this.loading = false
       })
     }
   },
   components: {
-    BaseBookListItem,
+    NovelListItem,
     FocusAreaSingle,
   },
 }
