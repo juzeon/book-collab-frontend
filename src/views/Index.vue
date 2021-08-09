@@ -1,5 +1,5 @@
 <template>
-  <base-focus-area-single>
+  <focus-area-single>
     <v-card flat outlined>
       <v-card-text>
         <v-subheader>小说列表</v-subheader>
@@ -15,12 +15,12 @@
       </v-card-text>
 
     </v-card>
-  </base-focus-area-single>
+  </focus-area-single>
 
 </template>
 
 <script>
-import BaseFocusAreaSingle from "@/components/BaseFocusAreaSingle"
+import FocusAreaSingle from "@/components/FocusAreaSingle"
 import BaseBookListItem from "@/components/BaseBookListItem"
 
 export default {
@@ -33,9 +33,16 @@ export default {
       loading: true
     }
   },
+  methods:{
+    getList(){
+      this.$axios.get('novel/list').then(res =>{
+        
+      })
+    }
+  },
   components: {
     BaseBookListItem,
-    BaseFocusAreaSingle,
+    FocusAreaSingle,
   },
 }
 </script>
