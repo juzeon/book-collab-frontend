@@ -27,6 +27,7 @@
       </v-card-actions>
     </v-card>
     <v-data-table
+        dense
         class="mt-5"
         :headers="tableHeader"
         :items="toc"
