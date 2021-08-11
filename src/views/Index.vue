@@ -6,7 +6,8 @@
         <v-progress-linear indeterminate v-show="loading"></v-progress-linear>
         <v-row>
           <v-col cols="6" v-for="(item,index) in bookList" :key="index">
-            <novel-list-item :name="item.title" :intro="item.intro" :novelId="item.id" :tags="item.tags"></novel-list-item>
+            <novel-list-item :name="item.title" :intro="item.intro" :novelId="item.id"
+                             :tags="item.tags" :wordcount="item.wordcount"></novel-list-item>
           </v-col>
         </v-row>
       </v-card-text>

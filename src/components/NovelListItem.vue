@@ -19,9 +19,12 @@
         <v-col cols="3">
           <v-img height="110" class="fill-height ml-2" :src="imgSrc"></v-img>
         </v-col>
-        <v-col cols="9">
+        <v-col cols="9" style="position: relative">
           <p class="body-1 font-weight-bold">{{ name }}</p>
-          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index">{{item}}</v-chip>
+          <div style="position: absolute;left: 0;bottom: 0;" class="mb-3 ml-3">
+            <v-chip outlined label color="blue" x-small>{{$helper.tranNumber(wordcount)}}</v-chip>
+            <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index" x-small>{{ item }}</v-chip>
+          </div>
         </v-col>
       </v-row>
       <v-btn icon right style="position: absolute;right: 0;bottom: 0;" @click="dialog=!dialog">
@@ -38,7 +41,8 @@ export default {
     name: String,
     intro: String,
     novelId: Number,
-    tags: String
+    tags: String,
+    wordcount: Number
   },
   data() {
     return {
@@ -52,8 +56,8 @@ export default {
     introWithBr() {
       return this.intro.replace(/\n/g, '<br/>')
     },
-    tagArr(){
-      if(this.tags){
+    tagArr() {
+      if (this.tags) {
         return this.$helper.tagsToTagArr(this.tags)
       }
       return []
