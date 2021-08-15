@@ -25,14 +25,17 @@
         <router-view/>
       </keep-alive>
     </v-main>
+    <app-snackbar></app-snackbar>
   </v-app>
 </template>
 
 <script>
 import * as vuex from 'vuex'
+import AppSnackbar from "@/components/AppSnackbar"
 
 export default {
   name: 'App',
+  components: {AppSnackbar},
   metaInfo: {
     title: 'Book Collab',
     titleTemplate: '%s | Book Collab',

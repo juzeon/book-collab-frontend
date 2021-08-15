@@ -5,7 +5,9 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
-        themeColor: colors.green.base
+        themeColor: colors.green.base,
+        snackBarOpen: false,
+        snackBarText: ''
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -15,6 +17,13 @@ export default new Vuex.Store({
                 pink: colors.pink.base
             }
             state.themeColor = colorsMap[newColor]
+        },
+        openSnackBar(state, text) {
+            state.snackBarOpen = true
+            state.snackBarText = text
+        },
+        setSnackBarStatus(state, status) {
+            state.snackBarOpen = status
         }
     },
     actions: {},

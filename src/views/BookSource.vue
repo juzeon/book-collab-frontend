@@ -11,11 +11,11 @@
       <p>主要书源包含为小说自动断章的功能，建议大部分情况使用。</p>
       <p>打开「阅读」，点击「我的」——「书源管理」——右上角选项图标——「建立书源」。</p>
       <p>复制下面的配置，然后点击右上角选项图标——「贴上源」</p>
-      <v-btn text elevation="1" class="my-2" @click="$helper.copyToClipboard(bookSource)">复制到剪贴簿</v-btn>
+      <v-btn text elevation="1" class="my-2" @click="copyToClip(bookSource)">复制到剪贴簿</v-btn>
       <code>
         {{ bookSource }}
       </code>
-      <v-btn text elevation="1" class="my-2" @click="$helper.copyToClipboard(bookSource)">复制到剪贴簿</v-btn>
+      <v-btn text elevation="1" class="my-2" @click="copyToClip(bookSource)">复制到剪贴簿</v-btn>
       <p>最后点击右上角保存图标。</p>
       <p class="text-h6">3. 添加备用书源</p>
       <p>在部分情况下，自动断章可能会出现问题，以致使用主要书源几乎无法阅读。备用书源通过字数断章。
@@ -23,11 +23,11 @@
       <p>备用书源的添加步骤与主要书源如出一辙。</p>
       <p>在「书源管理」页面，点击右上角选项图标——「建立书源」。</p>
       <p>复制下面的配置，然后点击右上角选项图标——「贴上源」</p>
-      <v-btn text elevation="1" class="my-2" @click="$helper.copyToClipboard(bookSourceFallback)">复制到剪贴簿</v-btn>
+      <v-btn text elevation="1" class="my-2" @click="copyToClip(bookSourceFallback)">复制到剪贴簿</v-btn>
       <code>
         {{bookSourceFallback}}
       </code>
-      <v-btn text elevation="1" class="my-2" @click="$helper.copyToClipboard(bookSourceFallback)">复制到剪贴簿</v-btn>
+      <v-btn text elevation="1" class="my-2" @click="copyToClip(bookSourceFallback)">复制到剪贴簿</v-btn>
       <p>最后点击右上角保存图标。</p>
       <p class="text-h6">4. 使用「阅读」的搜寻功能</p>
       <p>在「阅读」内，我们通过API提供基础搜寻功能。您可以使用以下语法：</p>
@@ -69,6 +69,10 @@ export default {
       this.$pureAxios.get(this.publicPath + 'bookSourceFallback.json', {transformResponse: (res) => res}).then(res => {
         this.bookSourceFallback = res.data
       })
+    },
+    copyToClip(text){
+      this.$helper.copyToClipboard(text)
+      this.$store.commit('openSnackBar','已复制到剪贴簿')
     }
   }
 }
