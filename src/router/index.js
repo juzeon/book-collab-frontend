@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Index from '../views/Index'
 import Novel from "@/views/Novel"
 import BookSource from "@/views/BookSource"
+import Settings from "@/views/Settings"
 
 Vue.use(VueRouter)
 
@@ -24,7 +25,13 @@ const routes = [
         name: 'BookSource',
         component: BookSource,
         props: true
-    }
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
+        props: true
+    },
 ]
 
 const router = new VueRouter({

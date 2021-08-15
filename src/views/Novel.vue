@@ -19,8 +19,8 @@
             <p class="body-1" v-html="novelIntro"></p>
           </v-col>
         </v-row>
-        <v-row class="mx-2">
-          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index">标签 | {{ item }}</v-chip>
+        <v-row class="mx-2 mb-1">
+          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index" class="mx-1">标签 | {{ item }}</v-chip>
           <v-spacer></v-spacer>
           <v-chip outlined label color="blue">字数 | {{ novelWordcount }}</v-chip>
         </v-row>
