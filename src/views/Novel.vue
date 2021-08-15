@@ -20,7 +20,10 @@
           </v-col>
         </v-row>
         <v-row class="mx-2 mb-1">
-          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index" class="mx-1">标签 | {{ item }}</v-chip>
+          <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index" class="mx-1">标签 | {{
+              item
+            }}
+          </v-chip>
           <v-spacer></v-spacer>
           <v-chip outlined label color="blue">字数 | {{ novelWordcount }}</v-chip>
         </v-row>
@@ -52,7 +55,9 @@
           :headers="tableHeader"
           :items="toc"
           :items-per-page="50"
-          :footer-props="{'items-per-page-options':[50,100,200,-1],showFirstLastPage:true}">
+          :footer-props="{'items-per-page-options':[50,100,200,-1],showFirstLastPage:true}"
+          @update:page="$vuetify.goTo(0)"
+      >
         <template #top>
           <p class="mx-2">目录</p>
         </template>

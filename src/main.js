@@ -22,7 +22,7 @@ let appAxios = axios.create({
 appAxios.interceptors.response.use(function (response) {
     // Do something with response data
     if (!response.data.status) {
-        Vue.prototype.$helper.alert.error('与伺服器连线时发生错误')
+        Vue.prototype.$helper.alert.error(response.data.data)
         return Promise.reject()
     }
     return response
