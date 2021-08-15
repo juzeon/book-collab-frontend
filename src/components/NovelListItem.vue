@@ -22,7 +22,7 @@
         <v-col cols="9" style="position: relative">
           <p class="body-1 font-weight-bold">{{ name }}</p>
           <div style="position: absolute;left: 0;bottom: 0;" class="mb-3 ml-3">
-            <v-chip outlined label color="blue" x-small>{{ $helper.tranNumber(wordcount) }}字</v-chip>
+            <v-chip outlined label color="blue" x-small>{{ $helper.transNumber(wordcount) }}字</v-chip>
             <v-chip outlined label color="green" v-for="(item,index) in tagArr" :key="index" x-small>{{ item }}</v-chip>
           </div>
         </v-col>

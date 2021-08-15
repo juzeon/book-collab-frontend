@@ -112,7 +112,7 @@ export default {
       return this.novelInfo?.meta?.intro?.replace(/\n/g, '<br/>') || ''
     },
     novelWordcount() {
-      return this.novelInfo?.meta?.wordcount ? this.$helper.tranNumber(this.novelInfo.meta.wordcount) : -1
+      return this.novelInfo?.meta?.wordcount ? this.$helper.transNumber(this.novelInfo.meta.wordcount) : -1
     }
   },
   watch: {

@@ -43,19 +43,48 @@ export class Helper {
         return tagArr.join(',')
     }
 
-    tranNumber(passingNum, point = 2) {
-        let num = Number(passingNum)
-        // 将数字转换为字符串,然后通过split方法用.分隔,取到第0个
-        let numStr = num.toString().split('.')[0]
-        if (numStr.length < 6) { // 判断数字有多长,如果小于6,,表示10万以内的数字,让其直接显示
-            return numStr
-        } else if (numStr.length >= 6 && numStr.length <= 8) { // 如果数字大于6位,小于8位,让其数字后面加单位万
-            let decimal = numStr.substring(numStr.length - 4, numStr.length - 4 + point)
-            // 由千位,百位组成的一个数字
-            return parseFloat(parseInt(num / 10000) + '.' + decimal) + '万'
-        } else if (numStr.length > 8) { // 如果数字大于8位,让其数字后面加单位亿
-            let decimal = numStr.substring(numStr.length - 8, numStr.length - 8 + point)
-            return parseFloat(parseInt(num / 100000000) + '.' + decimal) + '亿'
+    transNumber(number) {
+        let decimalDigit = 2
+        let integer = Math.floor(number)
+        let digit = this._getDigit(integer)
+        // ['个', '十', '百', '千', '万', '十万', '百万', '千万'];
+        let unit = []
+        if (digit > 3) {
+            let multiple = Math.floor(digit / 8)
+            if (multiple >= 1) {
+                let tmp = Math.round(integer / Math.pow(10, 8 * multiple))
+                unit.push(this._addWan(tmp, number, 8 * multiple, decimalDigit))
+                for (let i = 0; i < multiple; i++) {
+                    unit.push('亿')
+                }
+                return unit.join('')
+            } else {
+                return this._addWan(integer, number, 0, decimalDigit)
+            }
+        } else {
+            return number
         }
+    }
+
+    _addWan(integer, number, mutiple, decimalDigit) {
+        let digit = this._getDigit(integer)
+        if (digit > 3) {
+            let remainder = digit % 8
+            if (remainder >= 5) {   // ‘十万’、‘百万’、‘千万’显示为‘万’
+                remainder = 4
+            }
+            return Math.round(number / Math.pow(10, remainder + mutiple - decimalDigit)) / Math.pow(10, decimalDigit) + '万'
+        } else {
+            return Math.round(number / Math.pow(10, mutiple - decimalDigit)) / Math.pow(10, decimalDigit)
+        }
+    }
+
+    _getDigit(integer) {
+        let digit = -1
+        while (integer >= 1) {
+            digit++
+            integer = integer / 10
+        }
+        return digit
     }
 }

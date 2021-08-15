@@ -6,10 +6,28 @@
           <v-text-field prepend-icon="mdi-magnify" v-model="searchText"></v-text-field>
         </v-col>
         <v-col cols="1">
-          <v-btn class="mt-3 ml-2">套用</v-btn>
+          <v-btn class="mt-3 ml-2" @click="updateTextToSearchFilterList">套用</v-btn>
         </v-col>
       </v-row>
-      <v-row no-gutters class="mx-6" v-for="(filterItem,index) in searchFilters" :key="'sf-'+index">
+      <v-container class="px-2 py-0">
+        <v-menu v-for="(element,orderName) in orderData" :key="'om-'+orderName">
+          <template #activator="{on,attrs}">
+            <v-btn text v-bind="attrs" v-on="on" class="float-right">{{ element.text }}：{{
+                element.current.text
+              }}
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item v-for="(item,index) in element.list" :key="'om-'+orderName+'-'+index"
+                         @click="changeOrderData(orderName,item)">
+              <v-list-item-title>
+                {{ item.text }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-container>
+      <v-row no-gutters style="clear: both" class="mx-6" v-for="(filterItem,index) in searchFilters" :key="'sf-'+index">
         <v-col cols="2">
           <p class="mt-1">{{ filterItem.text }}：</p>
         </v-col>
@@ -53,8 +71,14 @@
           </v-col>
         </v-row>
       </v-card-text>
-
     </v-card>
+    <v-pagination
+        v-model="page"
+        class="my-4"
+        :length="Math.ceil(novelListAllFiltered.length/perPage)"
+        @input="$vuetify.goTo(0)"
+    ></v-pagination>
+    <back-to-top-fab></back-to-top-fab>
   </focus-area-single>
 
 </template>
@@ -62,6 +86,7 @@
 <script>
 import FocusAreaSingle from "@/components/FocusAreaSingle"
 import NovelListItem from "@/components/NovelListItem"
+import BackToTopFab from "@/components/BackToTopFab"
 
 export default {
   name: 'Index',
@@ -75,6 +100,24 @@ export default {
       novelListAllFiltered: [],
       page: 1,
       perPage: 20,
+      orderData: {
+        orderBy: {
+          text: '排序依',
+          current: {slug: 'time', text: '添加时间'},
+          list: [
+            {slug: 'time', text: '添加时间'},
+            {slug: 'wordcount', text: '字数'}
+          ]
+        },
+        orderType: {
+          text: '排序按',
+          current: {slug: 'desc', text: '降序'},
+          list: [
+            {slug: 'desc', text: '降序'},
+            {slug: 'asc', text: '升序'}
+          ]
+        }
+      },
       searchFilters: [
         {text: '必含关键词', list: [], dialog: false, bufferedText: '', chipColor: 'blue', searchTextAppend: ''},
         {text: '封印关键词', list: [], dialog: false, bufferedText: '', chipColor: 'orange', searchTextAppend: '-'},
@@ -109,7 +152,7 @@ export default {
     filterNovelList() {
       console.log('Now let\'s do filtering')
       this.loading = true
-      let list = this.novelListAll
+      let list = this.novelListAll.slice()
       for (let name of this.searchFilters[0].list) {
         list = list.filter(value => value.title.includes(name))
       }
@@ -147,6 +190,24 @@ export default {
         })
       }
       console.log('OK, filtered arr length: ' + list.length)
+
+      // 对此list进行排序
+      list.sort((a, b) => {
+        let cp1 = a
+        let cp2 = b
+        if (this.orderData.orderType.current.slug === 'desc') {
+          cp1 = b
+          cp2 = a
+        }
+        switch (this.orderData.orderBy.current.slug) {
+          default:
+          case 'time':
+            return cp1.time - cp2.time
+          case 'wordcount':
+            return cp1.wordcount - cp2.wordcount
+        }
+      })
+
       this.novelListAllFiltered = list
       this.loading = false
     },
@@ -191,9 +252,34 @@ export default {
       }
       text = text.trim()
       this.searchText = text
+    },
+    updateTextToSearchFilterList() {
+      let arr = this.searchText.split(' ').filter(value => value.length !== 0)
+      let filtersMap = [[], [], [], []]
+      for (let name of arr) {
+        console.log('look at ' + name)
+        for (let [index, item] of this.searchFilters.slice().reverse().entries()) {
+          console.log('check ' + index + ': ' + item.text + ' with ' + item.searchTextAppend)
+          if (name.startsWith(item.searchTextAppend)) {
+            console.log(name + ' starts with ' + item.searchTextAppend + ' at index ' + index)
+            filtersMap[index].push(name.replace(item.searchTextAppend, ''))
+            break
+          }
+        }
+      }
+      for (let [index, list] of filtersMap.slice().reverse().entries()) {
+        this.searchFilters[index].list = list
+      }
+      this.filterNovelList()
+      this.updateSearchFilterListToText()
+    },
+    changeOrderData(orderName, newCurrent) {
+      this.orderData[orderName].current = newCurrent
+      this.filterNovelList()
     }
   },
   components: {
+    BackToTopFab,
     NovelListItem,
     FocusAreaSingle,
   },
