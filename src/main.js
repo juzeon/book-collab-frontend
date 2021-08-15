@@ -21,7 +21,7 @@ let appAxios = axios.create({
 })
 appAxios.interceptors.response.use(function (response) {
     // Do something with response data
-    if(!response.data.status){
+    if (!response.data.status) {
         Vue.prototype.$helper.alert.error('与伺服器连线时发生错误')
         return Promise.reject()
     }
@@ -30,8 +30,9 @@ appAxios.interceptors.response.use(function (response) {
     // Do something with response error
     Vue.prototype.$helper.alert.error('与伺服器连线时发生错误')
     return Promise.reject(error)
-});
+})
 Vue.prototype.$axios = appAxios
+Vue.prototype.$pureAxios = axios.create()
 
 new Vue({
     store,

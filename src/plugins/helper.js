@@ -87,4 +87,8 @@ export class Helper {
         }
         return digit
     }
+
+    copyToClipboard(text){
+        navigator.clipboard.writeText(text)
+    }
 }

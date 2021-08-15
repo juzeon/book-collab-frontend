@@ -1,0 +1,45 @@
+{
+  "bookSourceComment": "",
+  "bookSourceGroup": "my",
+  "bookSourceName": "book-collab",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://book-collab.skyju.cc",
+  "customOrder": 0,
+  "enabled": true,
+  "enabledExplore": true,
+  "exploreUrl": "注：标签只是参考作用，并不精确，也会有遗漏::\n全部标签::/novel/list?page={{page}}\n改文::/novel/list?page={{page}}&search=#改文\n完结::/novel/list?page={{page}}&search=#完结",
+  "lastUpdateTime": 1628178978594,
+  "ruleBookInfo": {
+    "intro": "$.data.meta.intro",
+    "kind": "$.data.meta.tags",
+    "name": "$.data.meta.title",
+    "tocUrl": "/novel/{{$.data.meta.id}}",
+    "wordCount": "$.data.meta.wordcount"
+  },
+  "ruleContent": {
+    "content": "$.data.content"
+  },
+  "ruleExplore": {
+    "bookList": "$.data",
+    "bookUrl": "/novel/{{$.id}}",
+    "intro": "$.intro",
+    "kind": "$.tags",
+    "name": "$.title",
+    "wordCount": "$.wordcount"
+  },
+  "ruleSearch": {
+    "bookList": "$.data",
+    "bookUrl": "/novel/{{$.id}}",
+    "intro": "$.intro",
+    "kind": "$.tags",
+    "name": "$.title",
+    "wordCount": "$.wordcount"
+  },
+  "ruleToc": {
+    "chapterList": "$.data.toc",
+    "chapterName": "$.title",
+    "chapterUrl": "{{book.tocUrl}}/chapter/{{$.orderId}}"
+  },
+  "searchUrl": "/novel/list?page={{page}}&search={{key}}",
+  "weight": 0
+}
