@@ -44,24 +44,12 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn icon class="ml-2">
+          <v-btn icon class="ml-2" @click="navigateToView">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-data-table
-          dense
-          class="mt-5"
-          :headers="tableHeader"
-          :items="toc"
-          :items-per-page="50"
-          :footer-props="{'items-per-page-options':[50,100,200,-1],showFirstLastPage:true}"
-          @update:page="$vuetify.goTo(0)"
-      >
-        <template #top>
-          <p class="mx-2">目录</p>
-        </template>
-      </v-data-table>
+      <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)"></novel-toc-table>
     </div>
     <back-to-top-fab></back-to-top-fab>
   </focus-area-single>
@@ -70,6 +58,7 @@
 <script>
 import FocusAreaSingle from "@/components/FocusAreaSingle"
 import BackToTopFab from "@/components/BackToTopFab"
+import NovelTocTable from "@/components/NovelTocTable"
 
 export default {
   name: "Novel",
@@ -85,11 +74,6 @@ export default {
     return {
       loading: true,
       novelInfo: null,
-      tableHeader: [
-        {text: 'OrderID', value: 'orderId'},
-        {text: '标题', value: 'title', sortable: false},
-        {text: '字数', value: 'wordcount'}
-      ],
       downloadSelector: [
         {text: '下载带章节TXT', queryUri: ''},
         {text: '下载带章节TXT（Fallback）', queryUri: 'fallback=1'},
@@ -125,7 +109,7 @@ export default {
       this.getNovelInfo()
     }
   },
-  created() {
+  mounted() {
     this.getNovelInfo()
   },
   methods: {
@@ -139,9 +123,12 @@ export default {
     },
     navigateBack() {
       this.$router.push({name: 'Index'})
+    },
+    navigateToView() {
+      this.$router.push({name: 'Read', params: {novelId: this.novelId, viewType: 'normal', rawOrderId: 0}})
     }
   },
-  components: {BackToTopFab, FocusAreaSingle}
+  components: {NovelTocTable, BackToTopFab, FocusAreaSingle}
 }
 </script>
 

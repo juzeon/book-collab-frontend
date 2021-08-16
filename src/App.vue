@@ -50,12 +50,13 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.applyTheme()
-  },
   watch: {
-    themeColor() {
-      this.applyTheme()
+    themeColor:{
+      immediate:true,
+      handler(){
+        console.log('apply theme')
+        this.applyTheme()
+      }
     }
   },
   computed: {

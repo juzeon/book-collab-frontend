@@ -4,6 +4,7 @@ import Index from '../views/Index'
 import Novel from "@/views/Novel"
 import BookSource from "@/views/BookSource"
 import Settings from "@/views/Settings"
+import Read from "@/views/Read"
 
 Vue.use(VueRouter)
 
@@ -15,7 +16,7 @@ const routes = [
         props: true
     },
     {
-        path: '/novel/:novelId',
+        path: '/novel/:novelId(\\d+)',
         name: 'Novel',
         component: Novel,
         props: true
@@ -30,6 +31,12 @@ const routes = [
         path: '/settings',
         name: 'Settings',
         component: Settings,
+        props: true
+    },
+    {
+        path: '/novel/:novelId(\\d+)/viewType/:viewType/orderId/:orderId(\\d+)',
+        name: 'Read',
+        component: Read,
         props: true
     },
 ]

@@ -57,7 +57,7 @@ export default {
   metaInfo: {
     title: '书源'
   },
-  created() {
+  mounted() {
     this.getBookSources()
   },
   methods: {
