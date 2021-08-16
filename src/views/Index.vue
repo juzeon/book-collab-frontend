@@ -65,7 +65,7 @@
       <v-card-text>
         <v-subheader>小说列表</v-subheader>
         <v-row>
-          <v-col cols="6" v-for="(item,index) in novelListCurrent" :key="'nli-'+index">
+          <v-col class="col-sm-12 col-md-6" v-for="(item,index) in novelListCurrent" :key="'nli-'+index">
             <novel-list-item :name="item.title" :novelId="item.id"
                              :tags="item.tags" :wordcount="item.wordcount"></novel-list-item>
           </v-col>
