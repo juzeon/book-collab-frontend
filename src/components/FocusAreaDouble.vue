@@ -19,6 +19,7 @@ export default {
   max-width: 95%;
   overflow-y: hidden;
   height: calc(99vh - 64px);
+  word-wrap: break-word;
   /*column-width: 600px;*/ /* 列的宽度,宽度足够大的话,可能只会显示2列/1列 (不常用,可使用column-count) */
 }
 </style>

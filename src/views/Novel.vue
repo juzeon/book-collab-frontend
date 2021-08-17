@@ -28,7 +28,7 @@
           <v-chip outlined label color="blue">字数 | {{ novelWordcount }}</v-chip>
         </v-row>
         <v-card-actions>
-          <v-menu>
+          <v-menu offset-y>
             <template #activator="{on,attrs}">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-download</v-icon>
@@ -44,9 +44,21 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn icon class="ml-2" @click="navigateToView">
-            <v-icon>mdi-eye</v-icon>
-          </v-btn>
+          <v-menu offset-y>
+            <template #activator="{ on, attrs }">
+              <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
+                <v-icon>mdi-eye</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="navigateToRead('normal')">
+                <v-list-item-title>Normal模式</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="navigateToRead('fallback')">
+                <v-list-item-title>Fallback模式</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-card-actions>
       </v-card>
       <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)" :novelId="+novelId"></novel-toc-table>
@@ -124,8 +136,8 @@ export default {
     navigateBack() {
       this.$router.push({name: 'Index'})
     },
-    navigateToView() {
-      this.$router.push({name: 'Read', params: {novelId: this.novelId, viewType: 'normal', rawOrderId: 0}})
+    navigateToRead(viewType) {
+      this.$router.push({name: 'Read', params: {novelId: this.novelId, viewType: viewType, rawOrderId: 0}})
     }
   },
   components: {NovelTocTable, BackToTopFab, FocusAreaSingle}

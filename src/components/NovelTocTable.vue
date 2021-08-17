@@ -12,7 +12,7 @@
       <p class="mx-2">目录</p>
     </template>
     <template #item.title="{ item }">
-      <v-btn text class="no-uppercase" @click="clickTitle(item.orderId)">{{ item.title }}</v-btn>
+      <v-btn text small class="no-uppercase" @click="clickTitle(item.orderId)">{{ item.title }}</v-btn>
     </template>
   </v-data-table>
 </template>

@@ -21,11 +21,13 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-card-text>
-          <v-btn @click="navigateToNovel">
-            <v-icon>mdi-arrow-left</v-icon>
-            退出
-          </v-btn>
-          <v-checkbox v-model="useFallback" label="Fallback模式"></v-checkbox>
+          <v-row class="ml-1">
+            <v-btn @click="navigateToNovel" class="mt-3">
+              <v-icon>mdi-arrow-left</v-icon>
+              退出
+            </v-btn>
+            <v-switch v-model="useFallback" label="Fallback模式" class="ml-4"></v-switch>
+          </v-row>
           <novel-toc-table :toc="toc" :per-page="10" :novelId="+novelId" :view-type="viewType">
           </novel-toc-table>
         </v-card-text>
@@ -148,9 +150,9 @@ export default {
         this.tinyLoading = false
         this.enableIntersect = true
         console.log('Done get chapter with orderId ' + orderId)
-        setTimeout(()=>{
+        setTimeout(() => {
           this.checkGetNextChapter()
-        },100)
+        }, 100)
       })
     },
     checkGetNextChapter() {
