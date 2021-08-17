@@ -35,7 +35,7 @@ const routes = [
         props: true
     },
     {
-        path: '/novel/:novelId(\\d+)/viewType/:viewType/orderId/:orderId(\\d+)',
+        path: '/novel/:novelId(\\d+)/viewType/:viewType/chapter/:rawOrderId(\\d+)',
         name: 'Read',
         component: Read,
         props: true

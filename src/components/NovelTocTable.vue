@@ -11,18 +11,26 @@
     <template #top>
       <p class="mx-2">目录</p>
     </template>
+    <template #item.title="{ item }">
+      <v-btn text class="no-uppercase" @click="clickTitle(item.orderId)">{{ item.title }}</v-btn>
+    </template>
   </v-data-table>
 </template>
 
 <script>
 export default {
   name: "NovelTocTable",
-  emits: ['updatePage'],
+  emits: ['updatePage','clickTitle'],
   props: {
     toc: Array,
     perPage: {
       type: Number,
       default: 50
+    },
+    novelId: Number,
+    viewType: {
+      type: String,
+      default: 'normal'
     }
   },
   data() {
@@ -33,10 +41,21 @@ export default {
         {text: '字数', value: 'wordcount'}
       ]
     }
+  },
+  methods: {
+    navigateToRead(orderId) {
+      this.$router.push({name: 'Read', params: {novelId: this.novelId, viewType: this.viewType, rawOrderId: orderId}})
+    },
+    clickTitle(orderId){
+      this.navigateToRead(orderId)
+      this.$emit('clickTitle')
+    }
   }
 }
 </script>
 
 <style scoped>
-
+.no-uppercase {
+  text-transform: none;
+}
 </style>

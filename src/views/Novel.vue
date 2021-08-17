@@ -49,7 +49,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)"></novel-toc-table>
+      <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)" :novelId="+novelId"></novel-toc-table>
     </div>
     <back-to-top-fab></back-to-top-fab>
   </focus-area-single>
