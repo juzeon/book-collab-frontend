@@ -1,5 +1,5 @@
 <template>
-  <focus-area-single>
+  <focus-area-single :md-block-taken="mdBlockTaken">
     <p v-html="contentText" :style="{fontSize:fontSize+'px'}"></p>
     <p v-intersect="onEndIntersect">&nbsp;</p>
     <v-overlay :value="loading">
@@ -29,6 +29,8 @@
             <v-select v-model="fontSize" label="字号" :items="fontSizeSelections" style="max-width: 100px"
                       class="ml-4"></v-select>
             <v-select v-model="linePadding" label="行距" :items="linePaddingSelections" style="max-width: 100px"
+                      class="ml-4"></v-select>
+            <v-select v-model="mdBlockTaken" label="阅读宽度" :items="mdBlockTakenSelections" style="max-width: 100px"
                       class="ml-4"></v-select>
             <v-switch v-model="useFallback" label="Fallback模式" class="ml-4"></v-switch>
           </v-row>
@@ -62,7 +64,8 @@ export default {
       moreActionsDialogOpen: false,
       contentArr: [],// orderId title content
       fontSizeSelections: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-      linePaddingSelections: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+      linePaddingSelections: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      mdBlockTakenSelections: [2, 4, 6, 8, 12]
     }
   },
   watch: {
@@ -89,6 +92,14 @@ export default {
       },
       set(value) {
         this.$store.commit('setReadingLinePadding', value)
+      }
+    },
+    mdBlockTaken: {
+      get() {
+        return parseInt(this.$store.state.readingMdBlockTaken)
+      },
+      set(value) {
+        this.$store.commit('setReadingMdBlockTaken', value)
       }
     },
     orderId() {

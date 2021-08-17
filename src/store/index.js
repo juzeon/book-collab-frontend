@@ -10,7 +10,8 @@ export default new Vuex.Store({
         snackBarOpen: false,
         snackBarText: '',
         readingFontSize: userConfig.get('readingFontSize'),
-        readingLinePadding: userConfig.get('readingLinePadding')
+        readingLinePadding: userConfig.get('readingLinePadding'),
+        readingMdBlockTaken: userConfig.get('readingMdBlockTaken')
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -35,6 +36,10 @@ export default new Vuex.Store({
         setReadingLinePadding(state, value) {
             state.readingLinePadding = value
             userConfig.set('readingLinePadding', value)
+        },
+        setReadingMdBlockTaken(state, value) {
+            state.readingMdBlockTaken = value
+            userConfig.set('readingMdBlockTaken', value)
         }
     },
     actions: {},

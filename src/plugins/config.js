@@ -5,7 +5,8 @@ let appConfig = {
 let userConfig = {
     defConfig: {
         readingFontSize: 17,
-        readingLinePadding: 10
+        readingLinePadding: 10,
+        readingMdBlockTaken: 6
     },
     set(key, value) {
         if(!(key in this.defConfig)){
