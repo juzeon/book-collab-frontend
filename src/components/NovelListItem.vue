@@ -9,7 +9,8 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">了解</v-btn>
+          <v-btn text @click="copyNovelTitle">复制书名</v-btn>
+          <v-btn text @click="dialog = false">关闭</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -78,6 +79,10 @@ export default {
         this.novelInfo = res.data.data
         this.loading = false
       })
+    },
+    copyNovelTitle() {
+      navigator.clipboard.writeText(this.novelInfo?.meta?.title)
+      this.$store.commit('openSnackBar', '已复制书名到剪贴簿')
     }
   }
 }

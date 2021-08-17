@@ -8,12 +8,14 @@
           size="64"
       ></v-progress-circular>
     </v-overlay>
-    <v-fab-transition>
-      <v-btn fab elevation="2" fixed right bottom dark color="primary" @click.stop="moreActionsDialogOpen=true">
-        <v-progress-circular indeterminate v-show="tinyLoading"></v-progress-circular>
-        <v-icon v-show="!tinyLoading">mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
+    <v-btn fab elevation="2" fixed right bottom dark color="primary" @click.stop="moreActionsDialogOpen=true">
+      <v-progress-circular indeterminate v-show="tinyLoading"></v-progress-circular>
+      <v-icon v-show="!tinyLoading">mdi-plus</v-icon>
+    </v-btn>
+    <v-btn fab elevation="2" fixed left bottom @click="navigateToNovel">
+      <v-progress-circular indeterminate v-show="tinyLoading"></v-progress-circular>
+      <v-icon v-show="!tinyLoading">mdi-arrow-left</v-icon>
+    </v-btn>
     <v-dialog v-model="moreActionsDialogOpen">
       <v-card>
         <v-card-title>更多操作</v-card-title>
@@ -21,13 +23,9 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-card-text>
-          <v-row class="ml-1">
-            <v-btn @click="navigateToNovel" class="mt-3">
-              <v-icon>mdi-arrow-left</v-icon>
-              退出
-            </v-btn>
+          <v-row class="ml-1 mt-1">
             <v-select v-model="fontSize" label="字号" :items="fontSizeSelections" style="max-width: 100px"
-                      class="ml-4"></v-select>
+                      class="ml-1"></v-select>
             <v-select v-model="linePadding" label="行距" :items="linePaddingSelections" style="max-width: 100px"
                       class="ml-4"></v-select>
             <v-select v-model="mdBlockTaken" label="阅读宽度" :items="mdBlockTakenSelections" style="max-width: 100px"
@@ -149,6 +147,9 @@ export default {
     },
     routerHash() {
       return this.novelId + this.viewType + this.rawOrderId
+    },
+    novelTitle() {
+      return this.novelInfo?.meta?.title || '阅读'
     }
   },
   mounted() {
@@ -196,9 +197,11 @@ export default {
       this.getChapter(this.fetchedOrderIdEnd + 1)
     }
   },
-  metaInfo: {
-    title: '阅读'
-  },
+  metaInfo() {
+    return {
+      title: this.novelTitle
+    }
+  }
 }
 </script>
 

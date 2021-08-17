@@ -63,7 +63,7 @@
       </v-row>
       <v-divider></v-divider>
       <v-card-text>
-        <v-subheader>小说列表</v-subheader>
+        <v-subheader>小说列表 {{ page }}/{{ totalPage }}</v-subheader>
         <v-row>
           <v-col class="col-sm-12 col-md-6" v-for="(item,index) in novelListCurrent" :key="'nli-'+index">
             <novel-list-item :name="item.title" :novelId="item.id"
@@ -75,7 +75,7 @@
     <v-pagination
         v-model="page"
         class="my-4"
-        :length="Math.ceil(novelListAllFiltered.length/perPage)"
+        :length="totalPage"
         @input="$vuetify.goTo(0)"
     ></v-pagination>
     <back-to-top-fab></back-to-top-fab>
@@ -130,6 +130,9 @@ export default {
   computed: {
     novelListCurrent() {
       return this.novelListAllFiltered.slice((this.page - 1) * this.perPage, this.page * this.perPage)
+    },
+    totalPage() {
+      return Math.ceil(this.novelListAllFiltered.length / this.perPage)
     }
   },
   mounted() {
