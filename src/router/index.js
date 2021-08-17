@@ -5,6 +5,7 @@ import Novel from "@/views/Novel"
 import BookSource from "@/views/BookSource"
 import Settings from "@/views/Settings"
 import Read from "@/views/Read"
+import DMCA from "@/views/DMCA"
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,12 @@ const routes = [
         path: '/novel/:novelId(\\d+)/viewType/:viewType/orderId/:orderId(\\d+)',
         name: 'Read',
         component: Read,
+        props: true
+    },
+    {
+        path: '/dmca',
+        name: 'DMCA',
+        component: DMCA,
         props: true
     },
 ]

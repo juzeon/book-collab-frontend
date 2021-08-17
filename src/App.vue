@@ -47,6 +47,7 @@ export default {
         {icon: 'mdi-home', text: '主页', routerName: 'Index'},
         {icon: 'mdi-book', text: '书源', routerName: 'BookSource'},
         {icon: 'mdi-cogs', text: '设定', routerName: 'Settings'},
+        {icon: 'mdi-scale-balance', text: 'DMCA', routerName: 'DMCA'},
       ]
     }
   },
