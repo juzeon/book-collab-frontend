@@ -1,7 +1,7 @@
 <template>
-  <focus-area-double>
-    <p v-html="contentText"></p>
-    <p v-intersect="onRightIntersect" class="float-right">&nbsp;</p>
+  <focus-area-single>
+    <p v-html="contentText" :style="{fontSize:fontSize+'px'}"></p>
+    <p v-intersect="onEndIntersect">&nbsp;</p>
     <v-overlay :value="loading">
       <v-progress-circular
           indeterminate
@@ -9,7 +9,7 @@
       ></v-progress-circular>
     </v-overlay>
     <v-fab-transition>
-      <v-btn fab elevation="2" fixed left bottom dark color="primary" @click.stop="moreActionsDialogOpen=true">
+      <v-btn fab elevation="2" fixed right bottom dark color="primary" @click.stop="moreActionsDialogOpen=true">
         <v-progress-circular indeterminate v-show="tinyLoading"></v-progress-circular>
         <v-icon v-show="!tinyLoading">mdi-plus</v-icon>
       </v-btn>
@@ -26,6 +26,10 @@
               <v-icon>mdi-arrow-left</v-icon>
               退出
             </v-btn>
+            <v-select v-model="fontSize" label="字号" :items="fontSizeSelections" style="max-width: 100px"
+                      class="ml-4"></v-select>
+            <v-select v-model="linePadding" label="行距" :items="linePaddingSelections" style="max-width: 100px"
+                      class="ml-4"></v-select>
             <v-switch v-model="useFallback" label="Fallback模式" class="ml-4"></v-switch>
           </v-row>
           <novel-toc-table :toc="toc" :per-page="10" :novelId="+novelId" :view-type="viewType">
@@ -33,16 +37,16 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </focus-area-double>
+  </focus-area-single>
 </template>
 
 <script>
-import FocusAreaDouble from "@/components/FocusAreaDouble"
 import NovelTocTable from "@/components/NovelTocTable"
+import FocusAreaSingle from "@/components/FocusAreaSingle"
 
 export default {
   name: "Read",
-  components: {NovelTocTable, FocusAreaDouble},
+  components: {FocusAreaSingle, NovelTocTable},
   props: {
     novelId: [Number, String],
     viewType: String,// normal, fallback
@@ -51,24 +55,42 @@ export default {
   data() {
     return {
       enableIntersect: false,
-      isRightIntersecting: false,
+      isEndIntersecting: false,
       novelInfo: null,
       loading: true,
       tinyLoading: false,
       moreActionsDialogOpen: false,
       contentArr: [],// orderId title content
+      fontSizeSelections: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+      linePaddingSelections: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     }
   },
   watch: {
     routerHash() {
       this.getNovelInfo()
     },
-    isRightIntersecting() {
-      console.log('I noticed isRightIntersecting is ' + this.isRightIntersecting)
+    isEndIntersecting() {
+      console.log('I noticed isEndIntersecting is ' + this.isEndIntersecting)
       this.checkGetNextChapter()
     }
   },
   computed: {
+    fontSize: {
+      get() {
+        return parseInt(this.$store.state.readingFontSize)
+      },
+      set(value) {
+        this.$store.commit('setReadingFontSize', value)
+      }
+    },
+    linePadding: {
+      get() {
+        return parseInt(this.$store.state.readingLinePadding)
+      },
+      set(value) {
+        this.$store.commit('setReadingLinePadding', value)
+      }
+    },
     orderId() {
       return parseInt(this.rawOrderId)
     },
@@ -94,7 +116,9 @@ export default {
       console.log('I generated content text with arr length ' + this.contentArr.length)
       let text = ''
       for (let str of this.contentArr) {
-        text += '<b>' + str.title + '</b><br/>' + str.content.replace(/\n/g, '<br/>')
+        text += '<span class="text-h6 font-weight-bold">' + str.title
+            + '</span><div style="padding-top: ' + this.linePadding + 'px"></div>'
+            + str.content.replace(/\n/g, '<div style="padding-top: ' + this.linePadding + 'px"></div>')
       }
       return text
     },
@@ -120,9 +144,9 @@ export default {
     this.getNovelInfo()
   },
   methods: {
-    onRightIntersect(entries, observer) {
-      this.isRightIntersecting = entries[0].isIntersecting
-      console.log('Right Intersecting: ' + this.isRightIntersecting)
+    onEndIntersect(entries, observer) {
+      this.isEndIntersecting = entries[0].isIntersecting
+      console.log('End Intersecting: ' + this.isEndIntersecting)
     },
     getNovelInfo() {
       this.enableIntersect = false
@@ -156,7 +180,7 @@ export default {
       })
     },
     checkGetNextChapter() {
-      if (!this.enableIntersect || !this.isRightIntersecting || this.fetchedOrderIdEnd >= this.novelInfo.toc.length - 1) return
+      if (!this.enableIntersect || !this.isEndIntersecting || this.fetchedOrderIdEnd >= this.novelInfo.toc.length - 1) return
       console.log(`FIRE getting next chapter`)
       this.getChapter(this.fetchedOrderIdEnd + 1)
     }

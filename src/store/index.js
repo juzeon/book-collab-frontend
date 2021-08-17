@@ -1,13 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import colors from 'vuetify/lib/util/colors'
+import {userConfig} from "@/plugins/config"
 
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         themeColor: colors.green.base,
         snackBarOpen: false,
-        snackBarText: ''
+        snackBarText: '',
+        readingFontSize: userConfig.get('readingFontSize'),
+        readingLinePadding: userConfig.get('readingLinePadding')
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -24,6 +27,14 @@ export default new Vuex.Store({
         },
         setSnackBarStatus(state, status) {
             state.snackBarOpen = status
+        },
+        setReadingFontSize(state, value) {
+            state.readingFontSize = value
+            userConfig.set('readingFontSize', value)
+        },
+        setReadingLinePadding(state, value) {
+            state.readingLinePadding = value
+            userConfig.set('readingLinePadding', value)
         }
     },
     actions: {},
