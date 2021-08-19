@@ -125,9 +125,8 @@ export default {
       console.log('I generated content text with arr length ' + this.contentArr.length)
       let text = ''
       for (let str of this.contentArr) {
-        text += '<span class="text-h6 font-weight-bold">' + str.title
-            + '</span><div style="padding-top: ' + this.linePadding + 'px"></div>'
-            + str.content.replace(/\n/g, '<div style="padding-top: ' + this.linePadding + 'px"></div>')
+        text += ('<span class="text-h6 font-weight-bold">' + str.title + '</span>\n'
+            + str.content + '\n').replace(/\n+/g, '<div style="padding-top: ' + this.linePadding + 'px"></div>')
       }
       return text
     },

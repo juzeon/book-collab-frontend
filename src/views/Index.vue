@@ -2,10 +2,11 @@
   <focus-area-single>
     <v-card flat outlined :loading="loading">
       <v-row no-gutters class="mx-6">
-        <v-col cols="11">
-          <v-text-field prepend-icon="mdi-magnify" v-model="searchText"></v-text-field>
+        <v-col cols="10">
+          <v-text-field prepend-icon="mdi-magnify" v-model="searchText"
+                        @keypress.up.enter="updateTextToSearchFilterList"></v-text-field>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="2">
           <v-btn class="mt-3 ml-2" @click="updateTextToSearchFilterList">套用</v-btn>
         </v-col>
       </v-row>
@@ -212,6 +213,7 @@ export default {
       })
 
       this.novelListAllFiltered = list
+      this.page = 1
       this.loading = false
     },
     removeFromSearchFilterList(filterIndex, name) {

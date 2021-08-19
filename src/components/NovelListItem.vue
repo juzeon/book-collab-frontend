@@ -5,11 +5,15 @@
         width="500">
       <v-card :loading="loading">
         <v-card-title class="text-h5 lighten-2">简介</v-card-title>
+        <v-row no-gutters dense class="mx-6 body-1">
+          <p class="my-0">《{{novelTitle}}》</p>
+          <v-btn icon small @click="copyNovelTitle" class="ml-2"><v-icon>mdi-content-copy</v-icon></v-btn>
+        </v-row>
+        <v-divider class="my-2"></v-divider>
         <v-card-text v-html="introWithBr"></v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="copyNovelTitle">复制书名</v-btn>
           <v-btn text @click="dialog = false">关闭</v-btn>
         </v-card-actions>
       </v-card>
@@ -63,6 +67,9 @@ export default {
         return this.$helper.tagsToTagArr(this.tags)
       }
       return []
+    },
+    novelTitle(){
+      return this.novelInfo?.meta?.title || ''
     }
   },
   methods: {
@@ -81,7 +88,7 @@ export default {
       })
     },
     copyNovelTitle() {
-      navigator.clipboard.writeText(this.novelInfo?.meta?.title)
+      navigator.clipboard.writeText(this.novelTitle)
       this.$store.commit('openSnackBar', '已复制书名到剪贴簿')
     }
   }
