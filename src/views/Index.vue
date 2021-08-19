@@ -66,7 +66,8 @@
       <v-card-text>
         <v-subheader>小说列表 {{ page }}/{{ totalPage }}</v-subheader>
         <v-row>
-          <v-col class="col-sm-12 col-md-6" v-for="(item,index) in novelListCurrent" :key="'nli-'+index">
+          <v-col :class="{'col-sm-12':true,'col-md-6':!singleColumn}" v-for="(item,index) in novelListCurrent"
+                 :key="'nli-'+index">
             <novel-list-item :name="item.title" :novelId="item.id"
                              :tags="item.tags" :wordcount="item.wordcount"></novel-list-item>
           </v-col>
@@ -88,6 +89,8 @@
 import FocusAreaSingle from "@/components/FocusAreaSingle"
 import NovelListItem from "@/components/NovelListItem"
 import BackToTopFab from "@/components/BackToTopFab"
+import * as vuex from 'vuex'
+import Vuex from "vuex"
 
 export default {
   name: 'Index',
@@ -100,7 +103,6 @@ export default {
       novelListAll: [],
       novelListAllFiltered: [],
       page: 1,
-      perPage: 20,
       orderData: {
         orderBy: {
           text: '排序依',
@@ -134,7 +136,11 @@ export default {
     },
     totalPage() {
       return Math.ceil(this.novelListAllFiltered.length / this.perPage)
-    }
+    },
+    ...vuex.mapState({
+      singleColumn: 'listingSingleColumn',
+      perPage: 'listingPerPage'
+    })
   },
   mounted() {
     this.getList()

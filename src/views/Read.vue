@@ -43,6 +43,7 @@
 <script>
 import NovelTocTable from "@/components/NovelTocTable"
 import FocusAreaSingle from "@/components/FocusAreaSingle"
+import Vuex from "vuex"
 
 export default {
   name: "Read",
@@ -78,7 +79,7 @@ export default {
   computed: {
     fontSize: {
       get() {
-        return parseInt(this.$store.state.readingFontSize)
+        return this.$store.state.readingFontSize
       },
       set(value) {
         this.$store.commit('setReadingFontSize', value)
@@ -86,7 +87,7 @@ export default {
     },
     linePadding: {
       get() {
-        return parseInt(this.$store.state.readingLinePadding)
+        return this.$store.state.readingLinePadding
       },
       set(value) {
         this.$store.commit('setReadingLinePadding', value)
@@ -94,7 +95,7 @@ export default {
     },
     mdBlockTaken: {
       get() {
-        return parseInt(this.$store.state.readingMdBlockTaken)
+        return this.$store.state.readingMdBlockTaken
       },
       set(value) {
         this.$store.commit('setReadingMdBlockTaken', value)

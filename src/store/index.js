@@ -11,7 +11,9 @@ export default new Vuex.Store({
         snackBarText: '',
         readingFontSize: userConfig.get('readingFontSize'),
         readingLinePadding: userConfig.get('readingLinePadding'),
-        readingMdBlockTaken: userConfig.get('readingMdBlockTaken')
+        readingMdBlockTaken: userConfig.get('readingMdBlockTaken'),
+        listingSingleColumn: userConfig.get('listingSingleColumn'),
+        listingPerPage: userConfig.get('listingPerPage')
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -40,6 +42,14 @@ export default new Vuex.Store({
         setReadingMdBlockTaken(state, value) {
             state.readingMdBlockTaken = value
             userConfig.set('readingMdBlockTaken', value)
+        },
+        setListingSingleColumn(state, value) {
+            state.listingSingleColumn = value
+            userConfig.set('listingSingleColumn', value)
+        },
+        setListingPerPage(state, value) {
+            state.listingPerPage = value
+            userConfig.set('listingPerPage', value)
         }
     },
     actions: {},
