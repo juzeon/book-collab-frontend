@@ -8,7 +8,8 @@ let userConfig = {
         readingLinePadding: 10,
         readingMdBlockTaken: 6,
         listingSingleColumn: false,
-        listingPerPage: 20
+        listingPerPage: 20,
+        listingGoToTopAfterPageChange: true
     },
     set(key, value) {
         if (!(key in this.defConfig)) {

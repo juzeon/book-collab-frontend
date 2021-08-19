@@ -13,7 +13,8 @@ export default new Vuex.Store({
         readingLinePadding: userConfig.get('readingLinePadding'),
         readingMdBlockTaken: userConfig.get('readingMdBlockTaken'),
         listingSingleColumn: userConfig.get('listingSingleColumn'),
-        listingPerPage: userConfig.get('listingPerPage')
+        listingPerPage: userConfig.get('listingPerPage'),
+        listingGoToTopAfterPageChange: userConfig.get('listingGoToTopAfterPageChange')
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -50,6 +51,10 @@ export default new Vuex.Store({
         setListingPerPage(state, value) {
             state.listingPerPage = value
             userConfig.set('listingPerPage', value)
+        },
+        setListingGoToTopAfterPageChange(state, value) {
+            state.listingGoToTopAfterPageChange = value
+            userConfig.set('listingGoToTopAfterPageChange', value)
         }
     },
     actions: {},

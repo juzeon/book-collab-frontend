@@ -78,7 +78,7 @@
         v-model="page"
         class="my-4"
         :length="totalPage"
-        @input="$vuetify.goTo(0)"
+        @input="changePage"
     ></v-pagination>
     <back-to-top-fab></back-to-top-fab>
   </focus-area-single>
@@ -139,7 +139,8 @@ export default {
     },
     ...vuex.mapState({
       singleColumn: 'listingSingleColumn',
-      perPage: 'listingPerPage'
+      perPage: 'listingPerPage',
+      goToTopAfterPageChange: 'listingGoToTopAfterPageChange'
     })
   },
   mounted() {
@@ -287,6 +288,11 @@ export default {
     changeOrderData(orderName, newCurrent) {
       this.orderData[orderName].current = newCurrent
       this.filterNovelList()
+    },
+    changePage(){
+      if(this.goToTopAfterPageChange){
+        this.$vuetify.goTo(0)
+      }
     }
   },
   components: {
