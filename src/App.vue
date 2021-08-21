@@ -52,11 +52,19 @@ export default {
     }
   },
   watch: {
-    themeColor:{
-      immediate:true,
-      handler(){
+    themeColor: {
+      immediate: true,
+      handler() {
         console.log('apply theme')
         this.applyTheme()
+      }
+    },
+    $route() {
+      if (window._czc) {
+        let location = window.location
+        let contentUrl = location.pathname + location.hash
+        let refererUrl = '/'
+        window._czc.push(['_trackPageview', contentUrl, refererUrl])
       }
     }
   },
@@ -64,6 +72,12 @@ export default {
     ...vuex.mapState([
       'themeColor'
     ])
+  },
+  mounted() {
+    let umeng = document.createElement('script')
+    umeng.src = 'https://v1.cnzz.com/z_stat.php?id=1280235112&web_id=1280235112'
+    umeng.language = 'JavaScript'
+    document.body.appendChild(umeng)
   },
   methods: {
     navigateTo(routerName, params = {}) {
