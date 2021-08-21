@@ -14,7 +14,8 @@ export default new Vuex.Store({
         readingMdBlockTaken: userConfig.get('readingMdBlockTaken'),
         listingSingleColumn: userConfig.get('listingSingleColumn'),
         listingPerPage: userConfig.get('listingPerPage'),
-        listingGoToTopAfterPageChange: userConfig.get('listingGoToTopAfterPageChange')
+        listingGoToTopAfterPageChange: userConfig.get('listingGoToTopAfterPageChange'),
+        adminKey: userConfig.get('adminKey')
     },
     mutations: {
         setThemeColors(state, newColor) {
@@ -55,6 +56,10 @@ export default new Vuex.Store({
         setListingGoToTopAfterPageChange(state, value) {
             state.listingGoToTopAfterPageChange = value
             userConfig.set('listingGoToTopAfterPageChange', value)
+        },
+        setAdminKey(state, value) {
+            state.adminKey = value
+            userConfig.set('adminKey', value)
         }
     },
     actions: {},

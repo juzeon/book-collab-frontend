@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import {appConfig} from "@/plugins/config"
+import {appAxios} from "@/plugins/appAxios"
 
 export class Helper {
     alert = {
@@ -88,7 +89,7 @@ export class Helper {
         return digit
     }
 
-    copyToClipboard(text){
+    copyToClipboard(text) {
         navigator.clipboard.writeText(text)
     }
 }

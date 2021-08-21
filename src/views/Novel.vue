@@ -30,8 +30,9 @@
         <v-card-actions>
           <v-menu offset-y>
             <template #activator="{on,attrs}">
-              <v-btn icon v-bind="attrs" v-on="on">
+              <v-btn text v-bind="attrs" v-on="on">
                 <v-icon>mdi-download</v-icon>
+                下载
               </v-btn>
             </template>
             <v-list>
@@ -46,8 +47,9 @@
           </v-menu>
           <v-menu offset-y>
             <template #activator="{ on, attrs }">
-              <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
+              <v-btn text class="ml-2" v-bind="attrs" v-on="on">
                 <v-icon>mdi-eye</v-icon>
+                预览
               </v-btn>
             </template>
             <v-list>
@@ -59,6 +61,31 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <v-dialog max-width="500px" v-model="updateTagsDialog">
+            <template #activator="{on,attrs}">
+              <v-btn text class="ml-2" v-show="adminKey.length" v-on="on" v-bind="attrs">
+                <v-icon>mdi-tag-multiple</v-icon>
+                标签
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>更改标签</v-card-title>
+              <v-container>
+                <v-text-field label="标签（英文逗号隔开）" v-model="inputTags"></v-text-field>
+                <v-subheader>所有标签</v-subheader>
+                <v-chip v-for="(item,index) in allTagArr" :key="'at-'+index" class="ml-1 mt-1"
+                        @click="addTagToInputTags(item.name)">
+                  <v-icon>mdi-tag</v-icon>
+                  {{ item.name }} | {{ item.count }}
+                </v-chip>
+              </v-container>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="updateTagsDialog=false">取消</v-btn>
+                <v-btn text :loading="updateTagsLoading" @click="updateTags">确认</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card-actions>
       </v-card>
       <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)" :novelId="+novelId"></novel-toc-table>
@@ -71,6 +98,8 @@
 import FocusAreaSingle from "@/components/FocusAreaSingle"
 import BackToTopFab from "@/components/BackToTopFab"
 import NovelTocTable from "@/components/NovelTocTable"
+import * as vuex from 'vuex'
+import * as QueryString from "querystring"
 
 export default {
   name: "Novel",
@@ -90,7 +119,11 @@ export default {
         {text: '下载带章节TXT', queryUri: ''},
         {text: '下载带章节TXT（Fallback）', queryUri: 'fallback=1'},
         {text: '下载原始TXT', queryUri: 'raw=1'}
-      ]
+      ],
+      inputTags: '',
+      updateTagsLoading: false,
+      allTagArr: [],
+      updateTagsDialog: false
     }
   },
   computed: {
@@ -114,7 +147,10 @@ export default {
     },
     novelWordcount() {
       return this.novelInfo?.meta?.wordcount ? this.$helper.transNumber(this.novelInfo.meta.wordcount) : -1
-    }
+    },
+    ...vuex.mapState({
+      adminKey: 'adminKey'
+    })
   },
   watch: {
     novelId() {
@@ -123,6 +159,7 @@ export default {
   },
   mounted() {
     this.getNovelInfo()
+    this.getAllTags()
   },
   methods: {
     getNovelInfo() {
@@ -130,6 +167,7 @@ export default {
       this.novelInfo = null
       this.$axios.get('novel/' + this.novelId).then(res => {
         this.novelInfo = res.data.data
+        this.inputTags = this.novelInfo.meta.tags
         this.loading = false
       })
     },
@@ -138,6 +176,30 @@ export default {
     },
     navigateToRead(viewType) {
       this.$router.push({name: 'Read', params: {novelId: this.novelId, viewType: viewType, rawOrderId: 0}})
+    },
+    getAllTags() {
+      this.$axios.get('tag/listAll').then(res => {
+        this.allTagArr = res.data.data
+      })
+    },
+    addTagToInputTags(tag) {
+      let arr = this.inputTags.split(',')
+      if (!arr.includes(tag)) {
+        arr.push(tag)
+      }
+      this.inputTags = arr.join(',')
+    },
+    updateTags() {
+      this.updateTagsLoading = true
+      this.$axios.post('admin/updateTags', QueryString.stringify({
+        novelId: this.novelId,
+        tags: this.inputTags
+      })).then(res => {
+        this.getNovelInfo()
+        this.getAllTags()
+        this.updateTagsLoading = false
+        this.updateTagsDialog = false
+      })
     }
   },
   components: {NovelTocTable, BackToTopFab, FocusAreaSingle}

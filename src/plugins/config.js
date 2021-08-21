@@ -9,7 +9,8 @@ let userConfig = {
         readingMdBlockTaken: 6,
         listingSingleColumn: false,
         listingPerPage: 20,
-        listingGoToTopAfterPageChange: true
+        listingGoToTopAfterPageChange: true,
+        adminKey: ''
     },
     set(key, value) {
         if (!(key in this.defConfig)) {

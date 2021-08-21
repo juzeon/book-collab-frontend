@@ -1,6 +1,6 @@
 <template>
   <focus-area-single>
-    <v-card flat outlined :loading="loading">
+    <v-card flat outlined>
       <v-row no-gutters class="mx-6">
         <v-col cols="10">
           <v-text-field prepend-icon="mdi-magnify" v-model="searchText"
@@ -40,7 +40,7 @@
             {{ chipItem }}
           </v-chip>
           <v-dialog max-width="300px" v-model="filterItem.dialog">
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn icon right absolute v-on="on" v-bind="attrs">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
@@ -65,6 +65,9 @@
       <v-divider></v-divider>
       <v-card-text>
         <v-subheader>小说列表 {{ page }}/{{ totalPage }}</v-subheader>
+        <v-row class="d-flex justify-center" v-if="loading">
+          <v-progress-circular indeterminate></v-progress-circular>
+        </v-row>
         <v-row>
           <v-col :class="{'col-sm-12':true,'col-md-6':!singleColumn}" v-for="(item,index) in novelListCurrent"
                  :key="'nli-'+index">
@@ -149,6 +152,9 @@ export default {
   watch: {
     novelListAll() {
       this.filterNovelList()
+    },
+    loading(){
+      console.log('loading: '+this.loading)
     }
   },
   methods: {

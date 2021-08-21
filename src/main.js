@@ -9,6 +9,7 @@ import {Helper} from '@/plugins/helper'
 import axios from 'axios'
 import {appConfig} from "@/plugins/config"
 import VueMeta from "vue-meta"
+import {appAxios} from "@/plugins/appAxios"
 
 Vue.config.productionTip = false
 
@@ -16,21 +17,6 @@ Vue.use(VueMeta)
 
 Vue.prototype.$config = appConfig
 Vue.prototype.$helper = new Helper()
-let appAxios = axios.create({
-    baseURL: appConfig.baseUrl
-})
-appAxios.interceptors.response.use(function (response) {
-    // Do something with response data
-    if (!response.data.status) {
-        Vue.prototype.$helper.alert.error(response.data.data)
-        return Promise.reject()
-    }
-    return response
-}, function (error) {
-    // Do something with response error
-    Vue.prototype.$helper.alert.error('与伺服器连线时发生错误')
-    return Promise.reject(error)
-})
 Vue.prototype.$axios = appAxios
 Vue.prototype.$pureAxios = axios.create()
 

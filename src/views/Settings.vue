@@ -16,6 +16,17 @@
           <v-slider v-model="listingPerPage" step="10" min="10" max="500"
                     :label="`每页展示数量（${listingPerPage}）`"></v-slider>
         </v-col>
+        <v-col cols="12" class="d-flex">
+          <p class="text-h6">其他设定</p>
+        </v-col>
+        <v-col cols="12">
+          <v-tooltip v-model="showAdminKeyRefreshRequest" right>
+            <template #activator="{on,attrs}">
+              <v-text-field v-model="adminKey" label="管理员Key" style="width: 35%"></v-text-field>
+            </template>
+            重新载入页面以套用
+          </v-tooltip>
+        </v-col>
       </v-row>
     </v-card>
   </focus-area-single>
@@ -31,6 +42,16 @@ export default {
   components: {FocusAreaSingle},
   metaInfo: {
     title: '设定'
+  },
+  data() {
+    return {
+      showAdminKeyRefreshRequest: false
+    }
+  },
+  watch: {
+    adminKey() {
+      this.showAdminKeyRefreshRequest = true
+    }
   },
   computed: {
     listingSingleColumn: {
@@ -55,6 +76,14 @@ export default {
       },
       set(value) {
         this.$store.commit('setListingGoToTopAfterPageChange', value)
+      }
+    },
+    adminKey: {
+      get() {
+        return this.$store.state.adminKey
+      },
+      set(value) {
+        this.$store.commit('setAdminKey', value)
       }
     }
   }
