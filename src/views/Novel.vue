@@ -86,6 +86,27 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog max-width="500px" v-model="updateSignifierDialog">
+            <template #activator="{on,attrs}">
+              <v-btn text class="ml-2" v-show="adminKey.length" v-on="on" v-bind="attrs">
+                <v-icon>mdi-regex</v-icon>
+                断章
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>更改断章正则</v-card-title>
+              <v-container>
+                <v-text-field label="用于标题的正则表达式" v-model="inputSignifier" :rules="[validateRegexp]"></v-text-field>
+                <v-subheader>参考正则</v-subheader>
+                <code>[1-9一二三四五六七八九十]+(章|回|幕|话|节|\.|、|:|：|，| )+</code>
+              </v-container>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="updateSignifierDialog=false">取消</v-btn>
+                <v-btn text :loading="updateSignifierLoading" @click="updateSignifier">确认</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card-actions>
       </v-card>
       <novel-toc-table :toc="toc" :updatePage="$vuetify.goTo(0)" :novelId="+novelId"></novel-toc-table>
@@ -123,7 +144,10 @@ export default {
       inputTags: '',
       updateTagsLoading: false,
       allTagArr: [],
-      updateTagsDialog: false
+      updateTagsDialog: false,
+      updateSignifierDialog: false,
+      updateSignifierLoading: false,
+      inputSignifier: ''
     }
   },
   computed: {
@@ -168,6 +192,7 @@ export default {
       this.$axios.get('novel/' + this.novelId).then(res => {
         this.novelInfo = res.data.data
         this.inputTags = this.novelInfo.meta.tags || ''
+        this.inputSignifier = ''
         this.loading = false
       })
     },
@@ -199,6 +224,28 @@ export default {
         this.getAllTags()
         this.updateTagsLoading = false
         this.updateTagsDialog = false
+      })
+    },
+    validateRegexp(text) {
+      if (!text.length) {
+        return '正则表达式不能为空'
+      }
+      try {
+        new RegExp(text)
+        return true
+      } catch (e) {
+        return '必须为有效的正则表达式'
+      }
+    },
+    updateSignifier() {
+      this.updateSignifierLoading = true
+      this.$axios.post('admin/updateSignifier', QueryString.stringify({
+        novelId: this.novelId,
+        signifier: this.inputSignifier
+      })).then(res => {
+        this.getNovelInfo()
+        this.updateSignifierLoading = false
+        this.updateSignifierDialog = false
       })
     }
   },
