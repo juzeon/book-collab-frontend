@@ -167,7 +167,7 @@ export default {
       this.novelInfo = null
       this.$axios.get('novel/' + this.novelId).then(res => {
         this.novelInfo = res.data.data
-        this.inputTags = this.novelInfo.meta.tags
+        this.inputTags = this.novelInfo.meta.tags || ''
         this.loading = false
       })
     },
