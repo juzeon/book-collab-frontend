@@ -5,6 +5,7 @@
       :headers="tableHeader"
       :items="toc"
       :items-per-page="perPage"
+      :mobile-breakpoint="0"
       :footer-props="{'items-per-page-options':[10,25,50,100,200,-1],showFirstLastPage:true}"
       @update:page="$emit('updatePage')"
   >
